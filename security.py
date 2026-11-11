@@ -1,14 +1,11 @@
 def check_password_strength(password):
-    special_chars = "@#$!"
-    
-    # 1. Track rules (Flags)
+    special_chars = "@#$!"   
     has_len = len(password) >= 8
     has_upper = False
     has_lower = False
     has_num = False
     has_special = False
-    
-    # 2. Inspect characters one-by-one
+ 
     for char in password:
         if char.isupper():
             has_upper = True
@@ -19,10 +16,8 @@ def check_password_strength(password):
         if char in special_chars:
             has_special = True
             
-    # 3. Calculate points
     score = sum([has_len, has_upper, has_lower, has_num, has_special])
-    
-    # 4. Set the strength text
+
     if score == 5:
         strength = "STRONG"
     elif score == 4:
@@ -30,49 +25,34 @@ def check_password_strength(password):
     elif score >= 2:
         strength = "WEAK"
     else:
-        strength = "VERY WEAK"
-        
-    # 5. Build visual report
-    analysis = "\nPassword Analysis:\n"
-    
-    # Convert true/false to visible symbols safely
-    if has_len: analysis += "[✓] Minimum 8 characters\n"
-    else: analysis += "[✗] Minimum 8 characters\n"
-    
-    if has_upper: analysis += "[✓] Uppercase letter\n"
-    else: analysis += "[✗] Uppercase letter\n"
-    
-    if has_lower: analysis += "[✓] Lowercase letter\n"
-    else: analysis += "[✗] Lowercase letter\n"
-    
-    if has_num: analysis += "[✓] Contains a number\n"
-    else: analysis += "[✗] Contains a number\n"
-    
-    if has_special: analysis += "[✓] Special character\n"
-    else: analysis += "[✗] Special character\n"
-    
-    analysis += f"\nPassword Strength: {strength}"
-    return analysis
+        strength = "VERY WEAK"         
+   
+    return f"""
+Password Analysis:
+[{'✓' if has_len else '✗'}] Minimum 8 characters
+[{'✓' if has_upper else '✗'}] Uppercase letter
+[{'✓' if has_lower else '✗'}] Lowercase letter
+[{'✓' if has_num else '✗'}] Contains a number
+[{'✓' if has_special else '✗'}] Special character
+
+Password Strength: {strength}"""
 
 def main():
     while True:
         print("\n===== PASSWORD SECURITY CHECKER =====")
-        user_password = input("Enter your password: ")
-        
-        # Rejection Guards
+        user_password = input("Enter your password: ")        
+       
         if ' ' in user_password:
             print("Password should not contain spaces!")
             continue
             
         if user_password.isdigit():
             print("Password cannot contain only numbers!")
-            continue
-            
-        # Get report and print it
+            continue            
+      
         result_display = check_password_strength(user_password)
-        print(result_display)
+        print(result_display)        
         
-        # Menu Options
         print("\n1. Check Another Password\n2. Exit")
         choice = input("Choose an option: ").strip()
         
